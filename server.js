@@ -14,12 +14,13 @@ const wss = new Server({ server });
 
 wss.on('connection', ws => {
   console.log('connection opened');
-  ws.send('255,255,255\r\n');
 
   ws.on('message', msg => {
     console.log('message: ' + msg.trim());
     wss.clients.forEach((client) => {
-      client.send(msg);
+      if (client !== ws) {
+        client.send(data);
+      }
     });
   });
 
