@@ -14,19 +14,16 @@ const wss = new Server({ server });
 
 wss.on('connection', ws => {
   console.log('connection opened');
-  ws.send('Hello from Node.js server');
+  ws.send('255,255,255\r\n');
 
   ws.on('message', msg => {
-    console.log('message: ' + msg);
+    console.log('message: ' + msg.trim());
+    wss.clients.forEach((client) => {
+      client.send(msg);
+    });
   });
 
   ws.on('close', () => {
     console.log('connection closed');
   });
 });
-
-setInterval(() => {
-  wss.clients.forEach((client) => {
-    client.send(new Date().toTimeString() + " this is the time");
-  });
-}, 1000);
