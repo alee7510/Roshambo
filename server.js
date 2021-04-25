@@ -19,7 +19,7 @@ wss.on('connection', ws => {
     console.log('message: ' + msg.trim());
     wss.clients.forEach((client) => {
       if (client !== ws) {
-        client.send(data);
+        client.send(msg);
       }
     });
   });
