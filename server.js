@@ -14,17 +14,19 @@ const wss = new Server({ server });
 
 wss.on('connection', ws => {
   console.log('connection opened');
+  ws.send('Hello from Node.js server');
 
   ws.on('message', msg => {
-    console.log('message: ' + msg.trim());
-    wss.clients.forEach((client) => {
-      if (client !== ws) {
-        client.send(data);
-      }
-    });
+    console.log('message: ' + msg);
   });
 
   ws.on('close', () => {
     console.log('connection closed');
   });
 });
+
+setInterval(() => {
+  wss.clients.forEach((client) => {
+    client.send(new Date().toTimeString() + " this is the time");
+  });
+}, 1000);
